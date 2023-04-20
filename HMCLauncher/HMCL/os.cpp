@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "os.h"
+#pragma comment(lib, "version.lib")
 
 LSTATUS MyRegQueryValue(HKEY hKey, LPCWSTR subKey, DWORD dwType,
                         std::wstring &out) {

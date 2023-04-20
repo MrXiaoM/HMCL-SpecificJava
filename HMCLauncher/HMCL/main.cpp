@@ -94,13 +94,14 @@ int APIENTRY wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
   bool isX64   = (systemInfo.wProcessorArchitecture == PROCESSOR_ARCHITECTURE_AMD64);
   bool isARM64 = (systemInfo.wProcessorArchitecture == PROCESSOR_ARCHITECTURE_ARM64);
 
+  RawLaunchJVM(L".minecraft\\java\\bin\\javaw.exe", workdir, exeName, jvmOptions);
   if (isARM64) {
-    RawLaunchJVM(L"jre-arm64\\bin\\javaw.exe", workdir, exeName, jvmOptions);
+    RawLaunchJVM(L".minecraft\\java\\jre-arm64\\bin\\javaw.exe", workdir, exeName, jvmOptions);
   }
   if (isX64) {
-    RawLaunchJVM(L"jre-x64\\bin\\javaw.exe", workdir, exeName, jvmOptions);
+    RawLaunchJVM(L".minecraft\\java\\jre-x64\\bin\\javaw.exe", workdir, exeName, jvmOptions);
   }
-  RawLaunchJVM(L"jre-x86\\bin\\javaw.exe", workdir, exeName, jvmOptions);
+  RawLaunchJVM(L".minecraft\\java\\jre-x86\\bin\\javaw.exe", workdir, exeName, jvmOptions);
 
   if (FindJava(path)) LaunchJVM(path + L"\\bin\\javaw.exe", workdir, exeName, jvmOptions);
 
