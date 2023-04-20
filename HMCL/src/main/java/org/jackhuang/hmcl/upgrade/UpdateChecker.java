@@ -80,46 +80,12 @@ public final class UpdateChecker {
         return checkingUpdate.getReadOnlyProperty();
     }
 
-    private static RemoteVersion checkUpdate(UpdateChannel channel) throws IOException {
-        if (!IntegrityChecker.isSelfVerified() && !"true".equals(System.getProperty("hmcl.self_integrity_check.disable"))) {
-            throw new IOException("Self verification failed");
-        }
-
-        String url = NetworkUtils.withQuery(Metadata.UPDATE_URL, mapOf(
-                pair("version", Metadata.VERSION),
-                pair("channel", channel.channelName)));
-
-        return RemoteVersion.fetch(channel, url);
-    }
-
     private static boolean isDevelopmentVersion(String version) {
         return version.contains("@") || // eg. @develop@
                 version.contains("SNAPSHOT"); // eg. 3.5.SNAPSHOT
     }
 
     public static void requestCheckUpdate(UpdateChannel channel) {
-        Platform.runLater(() -> {
-            if (isCheckingUpdate())
-                return;
-            checkingUpdate.set(true);
 
-            thread(() -> {
-                RemoteVersion result = null;
-                try {
-                    result = checkUpdate(channel);
-                    LOG.info("Latest version (" + channel + ") is " + result);
-                } catch (IOException e) {
-                    LOG.log(Level.WARNING, "Failed to check for update", e);
-                }
-
-                RemoteVersion finalResult = result;
-                Platform.runLater(() -> {
-                    checkingUpdate.set(false);
-                    if (finalResult != null) {
-                        latestVersion.set(finalResult);
-                    }
-                });
-            }, "Update Checker", true);
-        });
     }
 }
