@@ -31,7 +31,7 @@ val microsoftAuthId = System.getenv("MICROSOFT_AUTH_ID") ?: ""
 val microsoftAuthSecret = System.getenv("MICROSOFT_AUTH_SECRET") ?: ""
 val curseForgeApiKey = System.getenv("CURSEFORGE_API_KEY") ?: ""
 
-version = "$versionRoot.$buildNumber"
+version = versionRoot
 
 dependencies {
     implementation(project(":HMCLCore"))
