@@ -84,7 +84,7 @@ public final class VersionSetting implements Cloneable {
 
     // java
 
-    private final StringProperty javaProperty = new SimpleStringProperty(this, "java", "");
+    private final StringProperty javaProperty = new SimpleStringProperty(this, "java", "Custom");
 
     public StringProperty javaProperty() {
         return javaProperty;
@@ -170,7 +170,7 @@ public final class VersionSetting implements Cloneable {
         nativesDirProperty.set(nativesDir);
     }
 
-    private final StringProperty javaDirProperty = new SimpleStringProperty(this, "javaDir", "");
+    private final StringProperty javaDirProperty = new SimpleStringProperty(this, "javaDir", ".minecraft/java/bin/java.exe");
 
     public StringProperty javaDirProperty() {
         return javaDirProperty;
