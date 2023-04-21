@@ -323,9 +323,14 @@ public final class Controllers {
 
     public static void onHyperlinkAction(String href) {
         if (href.startsWith("hmcl://")) {
-            if ("hmcl://settings/feedback".equals(href)) {
+            String path = href.substring(7);
+            if ("settings/feedback".equals(path)) {
                 Controllers.getSettingsPage().showFeedback();
                 Controllers.navigate(Controllers.getSettingsPage());
+            }
+            if (path.startsWith("folder/")) {
+                String folderPath = path.substring(7);
+                FXUtils.openFolder(new File(folderPath));
             }
         } else {
             FXUtils.openLink(href);

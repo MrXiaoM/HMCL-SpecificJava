@@ -236,11 +236,22 @@ public final class MainPage extends StackPane implements DecoratorPage {
     }
 
     public MainPage() {
-        if (Metadata.isNightly()) {
-            announcementPane.getChildren().add(new AnnouncementCard(i18n("update.channel.nightly.title"), i18n("update.channel.nightly.hint")));
-        } else if (Metadata.isDev()) {
-            announcementPane.getChildren().add(new AnnouncementCard(i18n("update.channel.dev.title"), i18n("update.channel.dev.hint")));
-        }
+        announcementPane.getChildren().add(new AnnouncementCard(
+                "SweetRice 客户端",
+                "欢迎来到 SweetRice 服务器！在左侧添加账户，启动游戏吧~\n\n" +
+                        "在这里，你可以打开游戏文件夹进行安装 Mod/材质包/光影 或者查看截图等等\n" +
+                        open("screenshots", "打开截图文件夹") + " | " +
+                        open("mods", "打开Mods文件夹") + " | " +
+                        open("resourcepacks", "打开材质包文件夹") + " | " +
+                        open("shaderpacks", "打开光影文件夹") +"\n\n" +
+                        "加入玩家交流群：" + url("https://jq.qq.com/?_wv=1027&amp;k=csCx7wnq", "594212444") + "\n" +
+                        "请记住我们的服务器地址 " + url("https://pds.ink", "pds.ink")));
+    }
+    private String open(String folder, String text) {
+        return "<a href=\"hmcl://folder/.minecraft/versions/SweetRice/" + folder + "\">" + text + "</a>";
+    }
+    private String url(String url, String text) {
+        return "<a href=\"" + url + "\">" + text + "</a>";
     }
 
     private void showUpdate(boolean show) {

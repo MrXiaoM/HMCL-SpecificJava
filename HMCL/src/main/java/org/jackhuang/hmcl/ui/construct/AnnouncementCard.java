@@ -17,7 +17,9 @@
  */
 package org.jackhuang.hmcl.ui.construct;
 
-import javafx.scene.control.Label;
+import javafx.geometry.Pos;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.TextFlow;
 import org.jackhuang.hmcl.ui.Controllers;
@@ -28,9 +30,12 @@ public class AnnouncementCard extends VBox {
     public AnnouncementCard(String title, String content) {
         TextFlow tf = FXUtils.segmentToTextFlow(content, Controllers::onHyperlinkAction);
 
-        Label label = new Label(title);
-        label.getStyleClass().add("title");
-        getChildren().setAll(label, tf);
+        HBox imageBox = new HBox();
+        ImageView image = new ImageView("/assets/img/title.png");
+        imageBox.getChildren().add(image);
+        imageBox.setAlignment(Pos.CENTER);
+        imageBox.getStyleClass().add("title");
+        getChildren().setAll(imageBox, tf);
         setSpacing(14);
         getStyleClass().addAll("card", "announcement");
     }
