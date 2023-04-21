@@ -172,7 +172,7 @@ public class DecoratorController {
                     image = tryLoadImage(backgroundImageUrl).orElse(null);
                 break;
             case CLASSIC:
-                image = newImage("/assets/img/background-classic.jpg");
+                image = newImage("/assets/img/background.png");
                 break;
             case TRANSLUCENT:
                 return new Background(new BackgroundFill(new Color(1, 1, 1, 0.5), CornerRadii.EMPTY, Insets.EMPTY));
