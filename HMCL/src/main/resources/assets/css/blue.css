@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 .root {
-    -fx-base-color: #5C6BC0;
+    -fx-base-color: #b5708d;
     -fx-base-darker-color: derive(-fx-base-color, -10%);
     -fx-base-check-color: derive(-fx-base-color, 30%);
     -fx-rippler-color: rgba(92, 107, 192, 0.3);
