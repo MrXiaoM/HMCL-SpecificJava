@@ -24,6 +24,7 @@ import javafx.beans.WeakInvalidationListener;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.ButtonBase;
@@ -225,9 +226,13 @@ public final class Controllers {
         if (globalConfig().getAgreementVersion() < 1) {
             JFXDialogLayout agreementPane = new JFXDialogLayout();
             agreementPane.setHeading(new Label(i18n("launcher.agreement")));
-            agreementPane.setBody(new Label(i18n("launcher.agreement.hint")));
+            Label label = new Label(i18n("launcher.agreement.hint"));
+            label.setPadding(new Insets(14, 0, 0, 0));
+            agreementPane.setBody(label);
             JFXHyperlink agreementLink = new JFXHyperlink(i18n("launcher.agreement"));
             agreementLink.setExternalLink(Metadata.EULA_URL);
+            JFXHyperlink agreementServerLink = new JFXHyperlink("SweetRice 玩家协议");
+            agreementServerLink.setExternalLink(Metadata.EULA_URL_2);
             JFXButton yesButton = new JFXButton(i18n("launcher.agreement.accept"));
             yesButton.getStyleClass().add("dialog-accept");
             yesButton.setOnAction(e -> {
@@ -237,7 +242,7 @@ public final class Controllers {
             JFXButton noButton = new JFXButton(i18n("launcher.agreement.decline"));
             noButton.getStyleClass().add("dialog-cancel");
             noButton.setOnAction(e -> System.exit(1));
-            agreementPane.setActions(agreementLink, yesButton, noButton);
+            agreementPane.setActions(agreementLink, agreementServerLink, yesButton, noButton);
             Controllers.dialog(agreementPane);
         }
     }
