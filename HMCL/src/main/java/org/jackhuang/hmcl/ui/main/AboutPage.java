@@ -34,6 +34,18 @@ public class AboutPage extends StackPane {
     public AboutPage() {
         ComponentList about = new ComponentList();
         {
+            IconedTwoLineListItem server = new IconedTwoLineListItem();
+            server.setImage(new Image("/assets/img/icon.png"));
+            server.setTitle("SweetRiceMC 客户端启动器");
+            server.setSubtitle("基于 HMCL 修改");
+            server.setExternalLink("https://pds.ink");
+
+            IconedTwoLineListItem dev = new IconedTwoLineListItem();
+            dev.setImage(new Image("/assets/img/mrxiaom.png"));
+            dev.setTitle("人间工作 (MrXiaoM)");
+            dev.setSubtitle("SweetRice 服务器总技术");
+            dev.setExternalLink("https://space.bilibili.com/330771760");
+
             IconedTwoLineListItem launcher = new IconedTwoLineListItem();
             launcher.setImage(new Image("/assets/img/craft_table.png"));
             launcher.setTitle("Hello Minecraft! Launcher");
@@ -46,7 +58,7 @@ public class AboutPage extends StackPane {
             author.setSubtitle(i18n("about.author.statement"));
             author.setExternalLink("https://space.bilibili.com/1445341");
 
-            about.getContent().setAll(launcher, author);
+            about.getContent().setAll(server, dev, launcher, author);
         }
 
         ComponentList thanks = new ComponentList();
