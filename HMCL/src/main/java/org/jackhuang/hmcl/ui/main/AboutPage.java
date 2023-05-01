@@ -181,7 +181,17 @@ public class AboutPage extends StackPane {
             openSource.setSubtitle(i18n("about.open_source.statement"));
             openSource.setExternalLink("https://github.com/huanghongxun/HMCL");
 
-            legal.getContent().setAll(copyright, claim, openSource);
+            IconedTwoLineListItem openSourceFork = new IconedTwoLineListItem();
+            openSourceFork.setTitle(i18n("about.open_source"));
+            openSourceFork.setSubtitle("GPL v3 (Fork: https://github.com/MrXiaoM/HMCL-SpecificJava)");
+            openSourceFork.setExternalLink("https://github.com/MrXiaoM/HMCL-SpecificJava");
+
+            IconedTwoLineListItem license = new IconedTwoLineListItem();
+            license.setTitle("SweetRice 玩家协议");
+            license.setSubtitle(i18n("about.claim.statement"));
+            license.setExternalLink(Metadata.EULA_URL_2);
+
+            legal.getContent().setAll(copyright, claim, openSource, openSourceFork, license);
         }
 
         VBox content = new VBox(16);
