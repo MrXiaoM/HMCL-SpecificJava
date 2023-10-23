@@ -244,7 +244,7 @@ public final class MainPage extends StackPane implements DecoratorPage {
                         open("mods", "打开Mods文件夹") + " | " +
                         open("resourcepacks", "打开材质包文件夹") + " | " +
                         open("shaderpacks", "打开光影文件夹") +"\n\n" +
-                        "加入玩家交流群：" + url("https://jq.qq.com/?_wv=1027&amp;k=csCx7wnq", "594212444") + "\n" +
+                        "加入玩家交流群：" + url("https://www.pds.ink/group", "937785954") + "\n" +
                         "请记住我们的服务器地址 " + url("https://pds.ink", "pds.ink")));
     }
     private String open(String folder, String text) {
