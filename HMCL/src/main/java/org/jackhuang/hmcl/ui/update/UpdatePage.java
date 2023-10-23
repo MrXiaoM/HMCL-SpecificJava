@@ -21,6 +21,7 @@ import com.jfoenix.controls.JFXButton;
 import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.scene.Node;
+import jdk.internal.loader.FileURLMapper;
 import org.jackhuang.hmcl.download.*;
 import org.jackhuang.hmcl.download.game.GameRemoteVersion;
 import org.jackhuang.hmcl.mod.RemoteMod;
@@ -37,10 +38,7 @@ import org.jackhuang.hmcl.ui.SVG;
 import org.jackhuang.hmcl.ui.WeakListenerHolder;
 import org.jackhuang.hmcl.ui.animation.ContainerAnimations;
 import org.jackhuang.hmcl.ui.animation.TransitionPane;
-import org.jackhuang.hmcl.ui.construct.AdvancedListBox;
-import org.jackhuang.hmcl.ui.construct.MessageDialogPane;
-import org.jackhuang.hmcl.ui.construct.TabControl;
-import org.jackhuang.hmcl.ui.construct.TabHeader;
+import org.jackhuang.hmcl.ui.construct.*;
 import org.jackhuang.hmcl.ui.decorator.DecoratorAnimatedPage;
 import org.jackhuang.hmcl.ui.decorator.DecoratorPage;
 import org.jackhuang.hmcl.ui.download.InstallersPage;
@@ -50,11 +48,14 @@ import org.jackhuang.hmcl.ui.versions.*;
 import org.jackhuang.hmcl.ui.wizard.Navigation;
 import org.jackhuang.hmcl.ui.wizard.WizardController;
 import org.jackhuang.hmcl.ui.wizard.WizardProvider;
+import org.jackhuang.hmcl.util.ResourcePackUpdater;
 import org.jackhuang.hmcl.util.TaskCancellationAction;
+import org.jackhuang.hmcl.util.io.FileUtils;
 import org.jackhuang.hmcl.util.io.NetworkUtils;
 import org.jackhuang.hmcl.util.platform.OperatingSystem;
 import org.jetbrains.annotations.Nullable;
 
+import java.io.File;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
@@ -69,15 +70,13 @@ public class UpdatePage extends DecoratorAnimatedPage implements DecoratorPage {
     private final ReadOnlyObjectWrapper<State> state = new ReadOnlyObjectWrapper<>(State.fromTitle("更新客户端", -1));
     private final TabHeader tab;
     private final TabHeader.Tab<ModListUpdatePage> modTab = new TabHeader.Tab<>("modTab");
-    private final TabHeader.Tab<DownloadListPage> resourcePackTab = new TabHeader.Tab<>("resourcePackTab");
     private final TransitionPane transitionPane = new TransitionPane();
-
+    private final String versionId = "SweetRice";
     private WeakListenerHolder listenerHolder;
 
     public UpdatePage() {
-        modTab.setNodeSupplier(() -> new ModListUpdatePage(Profiles.getSelectedProfile(),"SweetRice"));
-        resourcePackTab.setNodeSupplier(loadVersionFor(() -> new DownloadListPage(CurseForgeRemoteModRepository.RESOURCE_PACKS, (profile, version, file) -> download(profile, version, file, "resourcepacks"), true)));
-        tab = new TabHeader(modTab, resourcePackTab);
+        modTab.setNodeSupplier(() -> new ModListUpdatePage(Profiles.getSelectedProfile(),versionId));
+        tab = new TabHeader(modTab);
 
         Profiles.registerVersionsListener(this::loadVersions);
 
@@ -95,12 +94,12 @@ public class UpdatePage extends DecoratorAnimatedPage implements DecoratorPage {
                         item.activeProperty().bind(tab.getSelectionModel().selectedItemProperty().isEqualTo(modTab));
                         item.setOnAction(e -> tab.select(modTab));
                     })
-                    /*.addNavigationDrawerItem(item -> {
+                    .addNavigationDrawerItem(item -> {
                         item.setTitle(i18n("resourcepack"));
                         item.setLeftGraphic(wrap(SVG::textureBox));
-                        item.activeProperty().bind(tab.getSelectionModel().selectedItemProperty().isEqualTo(resourcePackTab));
-                        item.setOnAction(e -> selectTabIfCurseForgeAvailable(resourcePackTab));
-                    })*/;
+                        item.activeProperty().set(false);
+                        item.setOnAction(e -> updateResourcePack());
+                    });
             FXUtils.setLimitWidth(sideBar, 200);
             setLeft(sideBar);
         }
@@ -108,21 +107,29 @@ public class UpdatePage extends DecoratorAnimatedPage implements DecoratorPage {
         setCenter(transitionPane);
     }
 
-    private void selectTabIfCurseForgeAvailable(TabControl.Tab<?> newTab) {
-        if (CurseForgeRemoteModRepository.isAvailable())
-            tab.select(newTab);
-        else
-            Controllers.dialog(i18n("download.curseforge.unavailable"));
-    }
-
-    private static <T extends Node> Supplier<T> loadVersionFor(Supplier<T> nodeSupplier) {
-        return () -> {
-            T node = nodeSupplier.get();
-            if (node instanceof VersionPage.VersionLoadable) {
-                ((VersionPage.VersionLoadable) node).loadVersion(Profiles.getSelectedProfile(), null);
-            }
-            return node;
-        };
+    private void updateResourcePack() {
+        File mcDir = Profiles.getSelectedProfile().getRepository().getRunDirectory(versionId);
+        File resFile = ResourcePackUpdater.getResourcePackFile(mcDir);
+        File shaFile = ResourcePackUpdater.getResourcePackSHA1File(mcDir);
+        Controllers.taskDialog(
+                Task.runAsync(() -> {
+                    String sha1 = ResourcePackUpdater.getSHA1FromApi();
+                    FileUtils.writeText(shaFile, sha1);
+                }).thenComposeAsync(() -> {
+                    FileDownloadTask task = new FileDownloadTask(ResourcePackUpdater.getAllDownloadLinks(), resFile);
+                    task.setName("服务器材质包");
+                    return task;
+                }).whenComplete(Schedulers.javafx(), exception -> {
+                    if (exception != null) {
+                        if (exception instanceof CancellationException) {
+                            Controllers.showToast(i18n("message.cancelled"));
+                        } else {
+                            Controllers.dialog(DownloadProviders.localizeErrorMessage(exception), i18n("install.failed.downloading"), MessageDialogPane.MessageType.ERROR);
+                        }
+                    } else {
+                        Controllers.showToast(i18n("install.success"));
+                    }
+                }), i18n("message.downloading"), TaskCancellationAction.NORMAL);
     }
 
     private static void download(Profile profile, @Nullable String version, RemoteMod.Version file, String subdirectoryName) {
@@ -165,9 +172,6 @@ public class UpdatePage extends DecoratorAnimatedPage implements DecoratorPage {
                 listenerHolder.add(FXUtils.onWeakChangeAndOperate(profile.selectedVersionProperty(), version -> {
                     if (modTab.isInitialized()) {
                         modTab.getNode().loadVersion(profile, null);
-                    }
-                    if (resourcePackTab.isInitialized()) {
-                        resourcePackTab.getNode().loadVersion(profile, null);
                     }
                 }));
             }

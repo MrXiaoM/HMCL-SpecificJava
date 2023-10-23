@@ -132,7 +132,7 @@ public class GithubFileFetch {
     }
 
     @Nullable
-    private static ByteArrayOutputStream get(String url) {
+    public static ByteArrayOutputStream get(String url) {
         try {
             HttpRequest.HttpGetRequest request = HttpRequest.HttpGetRequest.GET(url);
             HttpURLConnection con = request.createConnection();
