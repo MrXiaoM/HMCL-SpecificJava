@@ -50,6 +50,7 @@ import org.jackhuang.hmcl.ui.download.DownloadPage;
 import org.jackhuang.hmcl.ui.download.ModpackInstallWizardProvider;
 import org.jackhuang.hmcl.ui.main.LauncherSettingsPage;
 import org.jackhuang.hmcl.ui.main.RootPage;
+import org.jackhuang.hmcl.ui.update.UpdatePage;
 import org.jackhuang.hmcl.ui.versions.GameListPage;
 import org.jackhuang.hmcl.ui.versions.VersionPage;
 import org.jackhuang.hmcl.util.FutureCallback;
@@ -98,6 +99,7 @@ public final class Controllers {
         return accountListPage;
     });
     private static Lazy<LauncherSettingsPage> settingsPage = new Lazy<>(LauncherSettingsPage::new);
+    private static Lazy<UpdatePage> updatePage = new Lazy<>(UpdatePage::new);
 
     private Controllers() {
     }
@@ -128,6 +130,9 @@ public final class Controllers {
     // FXThread
     public static LauncherSettingsPage getSettingsPage() {
         return settingsPage.get();
+    }
+    public static UpdatePage getUpdatePage() {
+        return updatePage.get();
     }
 
     // FXThread
@@ -353,6 +358,7 @@ public final class Controllers {
         downloadPage = null;
         accountListPage = null;
         settingsPage = null;
+        updatePage = null;
         decorator = null;
         stage = null;
         scene = null;

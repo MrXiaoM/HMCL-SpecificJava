@@ -151,12 +151,19 @@ public class RootPage extends DecoratorAnimatedPage implements DecoratorPage {
             downloadItem.setTitle(i18n("download"));
             downloadItem.setOnAction(e -> Controllers.navigate(Controllers.getDownloadPage()));
 
-            // sixth item in left sidebar
+            // fifth item in left sidebar
             AdvancedListItem launcherSettingsItem = new AdvancedListItem();
             launcherSettingsItem.setLeftGraphic(wrap(SVG::gearOutline));
             launcherSettingsItem.setActionButtonVisible(false);
             launcherSettingsItem.setTitle(i18n("settings"));
             launcherSettingsItem.setOnAction(e -> Controllers.navigate(Controllers.getSettingsPage()));
+
+            // sixth item in left sidebar
+            AdvancedListItem updateItem = new AdvancedListItem();
+            updateItem.setLeftGraphic(wrap(SVG::server));
+            updateItem.setActionButtonVisible(false);
+            updateItem.setTitle("更新客户端");
+            updateItem.setOnAction(e -> Controllers.navigate(Controllers.getUpdatePage()));
 
             // the left sidebar
             AdvancedListBox sideBar = new AdvancedListBox()
@@ -167,7 +174,8 @@ public class RootPage extends DecoratorAnimatedPage implements DecoratorPage {
                     .add(gameItem)
                     .add(downloadItem)
                     .startCategory(i18n("settings.launcher.general").toUpperCase(Locale.ROOT))
-                    .add(launcherSettingsItem);
+                    .add(launcherSettingsItem)
+                    .add(updateItem);
 
             // the root page, with the sidebar in left, navigator in center.
             setLeft(sideBar);
