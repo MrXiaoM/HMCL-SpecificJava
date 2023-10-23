@@ -27,7 +27,7 @@ import org.jackhuang.hmcl.ui.FXUtils;
 
 public class AnnouncementCard extends VBox {
 
-    public AnnouncementCard(String title, String content) {
+    public AnnouncementCard(String content) {
         TextFlow tf = FXUtils.segmentToTextFlow(content, Controllers::onHyperlinkAction);
 
         HBox imageBox = new HBox();
