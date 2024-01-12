@@ -24,10 +24,10 @@ public class ResourcePackUpdater {
             "https://ghproxy.homeboyc.cn/",
             "https://ghps.cc/",
             "https://gh.ddlc.top/",
-            "https://ghproxy.com/",
-            "https://hub.gitmirror.com/",
-            "https://ghproxy.net/",
             "https://github.moeyy.cn/",
+            "https://ghproxy.net/",
+            "https://mirror.ghproxy.com/",
+            "https://hub.gitmirror.com/",
             ""
     };
     public static File getResourcePackFile(File mcDir) {
@@ -39,6 +39,10 @@ public class ResourcePackUpdater {
     public static List<URL> getAllDownloadLinks() {
         String url = "https://github.com/" + OWNER + "/" + REPO + "/blob/main" + REMOTE_PATH;
         List<URL> list = new ArrayList<>();
+        List<String> extraUrls = fetchExtraUpdateLinks();
+        for (String url : extraUrls) {
+            list.add(new URL(url));
+        }
         try {
             for (String mirror : MIRRORS) {
                 list.add(new URL(mirror + url));
@@ -60,5 +64,32 @@ public class ResourcePackUpdater {
         }
         JsonObject obj = array.get(0).getAsJsonObject();
         return obj.get("sha").getAsString();
+    }
+
+    static List<String> fetchExtraUpdateLinks() {
+        String url = "https://api.github.com/repos/" + OWNER + "/" + REPO + "/contents/metadata.json";
+        List<String> list = new ArrayList<>();
+        try {
+            HttpRequest.HttpGetRequest httpGet = HttpRequest.HttpGetRequest.GET(url);
+            httpGet.header("content-type", "application/json");
+            String result = httpGet.getString();
+
+            JsonObject json = JsonParser.parseString(result).getAsJsonObject();
+            if (json.get("message") != null) {
+                throw new IllegalStateException(json.get("message").getAsString());
+            }
+            String encoding = json.get("encoding").getAsString();
+            if (!encoding.equalsIgnoreCase("base64")) throw new IllegalStateException("未知的 encoding=" + encoding);
+            String content = new String(Base64.getDecoder().decode(json.get("content").getAsString()), StandardCharsets.UTF_8);
+            json = JsonParser.parseString(content).getAsJsonObject();
+
+            JsonArray array = json.get("extra_urls").getAsJsonArray();
+            for (JsonElement element : array) {
+                list.add(element.getAsString());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
     }
 }
