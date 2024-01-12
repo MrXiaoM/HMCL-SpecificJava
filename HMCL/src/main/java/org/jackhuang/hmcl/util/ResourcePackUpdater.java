@@ -11,7 +11,9 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 public class ResourcePackUpdater {
@@ -40,10 +42,10 @@ public class ResourcePackUpdater {
         String url = "https://github.com/" + OWNER + "/" + REPO + "/blob/main" + REMOTE_PATH;
         List<URL> list = new ArrayList<>();
         List<String> extraUrls = fetchExtraUpdateLinks();
-        for (String url : extraUrls) {
-            list.add(new URL(url));
-        }
         try {
+            for (String extra : extraUrls) {
+                list.add(new URL(extra));
+            }
             for (String mirror : MIRRORS) {
                 list.add(new URL(mirror + url));
             }
