@@ -323,6 +323,7 @@ class ModListUpdatePageSkin extends SkinBase<ModListUpdatePage> {
                 title.setTitle(modInfo.getModInfo().getName());
                 if (modInfo.canUpdate()) {
                     title.getTags().add("可更新");
+                    title.setStyle(title.getStyle() + ";-fx-text-fill: #FF6A00;");
                 }
                 if (StringUtils.isNotBlank(modInfo.getModInfo().getVersion())) {
                     title.getTags().addAll(modInfo.getModInfo().getVersion());
