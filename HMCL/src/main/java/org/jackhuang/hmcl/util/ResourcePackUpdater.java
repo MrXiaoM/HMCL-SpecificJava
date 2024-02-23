@@ -82,7 +82,8 @@ public class ResourcePackUpdater {
             }
             String encoding = json.get("encoding").getAsString();
             if (!encoding.equalsIgnoreCase("base64")) throw new IllegalStateException("未知的 encoding=" + encoding);
-            String content = new String(Base64.getDecoder().decode(json.get("content").getAsString()), StandardCharsets.UTF_8);
+            String base64 = json.get("content").getAsString().replace("\n", "");
+            String content = new String(Base64.getDecoder().decode(base64), StandardCharsets.UTF_8);
             json = JsonParser.parseString(content).getAsJsonObject();
 
             JsonArray array = json.get("extra_urls").getAsJsonArray();
