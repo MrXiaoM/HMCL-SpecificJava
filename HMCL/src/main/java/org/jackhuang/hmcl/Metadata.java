@@ -42,7 +42,7 @@ public final class Metadata {
     public static final String CHANGELOG_URL = "https://docs.hmcl.net/changelog/";
     public static final String PUBLISH_URL = "https://hmcl.huangyuhui.net";
     public static final String EULA_URL = "https://docs.hmcl.net/eula/hmcl.html";
-    public static final String EULA_URL_2 = "https://readme.4pr.top/rules.html";
+    public static final String EULA_URL_2 = "https://docs.pds.ink/rules";
 
     public static final String BUILD_CHANNEL = JarUtils.getManifestAttribute("Build-Channel", "nightly");
     public static final String GITHUB_SHA = JarUtils.getManifestAttribute("GitHub-SHA", null);
