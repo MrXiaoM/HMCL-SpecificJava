@@ -117,13 +117,18 @@ public class UpdatePage extends DecoratorAnimatedPage implements DecoratorPage {
                             Controllers.dialog(DownloadProviders.localizeErrorMessage(exception), i18n("install.failed.downloading"), MessageDialogPane.MessageType.ERROR);
                         }
                     } else {
-                        Controllers.showToast(i18n("install.success"));
+                        if (resourceLatest) {
+                            Controllers.showToast(i18n("update.latest"));
+                        } else {
+                            Controllers.showToast(i18n("install.success"));
+                        }
                     }
                 }), i18n("message.downloading"), TaskCancellationAction.NORMAL);
     }
-
+    private static boolean resourceLatest = false;
     public static Task<Void> resourceUpdateTask(String versionId) {
-        if (!ResourcePackUpdater.enable) return null;
+        resourceLatest = false;
+        if (!ResourcePackUpdater.enable) return Task.runAsync(() -> {});
         File mcDir = Profiles.getSelectedProfile().getRepository().getRunDirectory(versionId);
         File resFile = ResourcePackUpdater.getResourcePackFile(mcDir);
         File shaFile = ResourcePackUpdater.getResourcePackSHA1File(mcDir);
@@ -131,6 +136,7 @@ public class UpdatePage extends DecoratorAnimatedPage implements DecoratorPage {
             String sha1 = ResourcePackUpdater.getSHA1FromApi();
             String localSha1 = shaFile.exists() ? FileUtils.readText(shaFile) : "";
             if (localSha1.equals(sha1)) {
+                resourceLatest = true;
                 return null;
             }
             FileUtils.writeText(shaFile, sha1);
