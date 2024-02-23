@@ -3,6 +3,7 @@
 #include "os.h"
 #include "java.h"
 #include "lang.h"
+#include <windows.h>
 
 Version J8(TEXT("8"));
 
@@ -49,6 +50,10 @@ void FindJavaInDirAndLaunchJVM(const std::wstring &baseDir, const std::wstring &
   }
 }
 
+void OpenHelpPage() {
+    ShellExecute(0, 0, L"https://docs.hmcl.net/help.html", 0, 0, SW_SHOW);
+}
+
 int APIENTRY wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
                       LPWSTR lpCmdLine, int nCmdShow) {
   std::wstring path, exeName, jvmOptions;
@@ -69,23 +74,6 @@ int APIENTRY wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
   }
 
   bool useChinese = GetUserDefaultUILanguage() == 2052; // zh-CN
-
-  OSVERSIONINFOEX osvi;
-  DWORDLONG dwlConditionMask = 0;
-  int op = VER_GREATER_EQUAL;
-
-  // Initialize the OSVERSIONINFOEX structure.
-  ZeroMemory(&osvi, sizeof(OSVERSIONINFOEX));
-  osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFOEX);
-  osvi.dwMajorVersion = 6;
-  osvi.dwMinorVersion = 1;
-
-  // Initialize the condition mask.
-  VER_SET_CONDITION(dwlConditionMask, VER_MAJORVERSION, op);
-  VER_SET_CONDITION(dwlConditionMask, VER_MINORVERSION, op);
-
-  // Try downloading Java on Windows 7 or later
-  bool isWin7OrLater = VerifyVersionInfo(&osvi, VER_MAJORVERSION | VER_MINORVERSION, dwlConditionMask);
 
   SYSTEM_INFO systemInfo;
   GetNativeSystemInfo(&systemInfo);
@@ -152,19 +140,14 @@ int APIENTRY wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     FindJavaInDirAndLaunchJVM(hmclJavaDir, workdir, exeName, jvmOptions);
   }
 
-error:
   LPCWSTR downloadLink;
 
-  if (isWin7OrLater) {
-    if (isARM64) {
-      downloadLink = L"https://docs.hmcl.net/downloads/windows/arm64.html";
-    } if (isX64) {
-      downloadLink = L"https://docs.hmcl.net/downloads/windows/x86_64.html";
-    } else {
-      downloadLink = L"https://docs.hmcl.net/downloads/windows/x86.html";
-    }
+  if (isARM64) {
+    downloadLink = L"https://docs.hmcl.net/downloads/windows/arm64.html";
+  } if (isX64) {
+    downloadLink = L"https://docs.hmcl.net/downloads/windows/x86_64.html";
   } else {
-    downloadLink = L"https://docs.hmcl.net/downloads/java.html";
+    downloadLink = L"https://docs.hmcl.net/downloads/windows/x86.html";
   }
 
   if (IDOK == MessageBox(NULL, useChinese ? ERROR_PROMPT_ZH : ERROR_PROMPT, useChinese ? ERROR_TITLE_ZH : ERROR_TITLE, MB_ICONWARNING | MB_OKCANCEL)) {

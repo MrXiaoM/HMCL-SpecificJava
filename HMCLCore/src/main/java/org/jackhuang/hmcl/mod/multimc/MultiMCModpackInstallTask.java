@@ -78,6 +78,12 @@ public final class MultiMCModpackInstallTask extends Task<Void> {
                     builder.version("forge", c.getVersion());
             });
 
+            Optional<MultiMCManifest.MultiMCManifestComponent> neoForge = manifest.getMmcPack().getComponents().stream().filter(e -> e.getUid().equals("net.neoforged")).findAny();
+            neoForge.ifPresent(c -> {
+                if (c.getVersion() != null)
+                    builder.version("neoforge", c.getVersion());
+            });
+
             Optional<MultiMCManifest.MultiMCManifestComponent> liteLoader = manifest.getMmcPack().getComponents().stream().filter(e -> e.getUid().equals("com.mumfrey.liteloader")).findAny();
             liteLoader.ifPresent(c -> {
                 if (c.getVersion() != null)
@@ -134,12 +140,20 @@ public final class MultiMCModpackInstallTask extends Task<Void> {
         String subDirectory;
 
         try (FileSystem fs = CompressingUtils.readonly(zipFile.toPath()).setEncoding(modpack.getEncoding()).build()) {
-            if (Files.exists(fs.getPath("/" + manifest.getName() + "/.minecraft"))) {
+            // /.minecraft
+            if (Files.exists(fs.getPath("/.minecraft"))) {
+                subDirectory = "/.minecraft";
+            // /minecraft
+            } else if (Files.exists(fs.getPath("/minecraft"))) {
+                subDirectory = "/minecraft";
+            // /[name]/.minecraft
+            } else if (Files.exists(fs.getPath("/" + manifest.getName() + "/.minecraft"))) {
                 subDirectory = "/" + manifest.getName() + "/.minecraft";
+            // /[name]/minecraft
             } else if (Files.exists(fs.getPath("/" + manifest.getName() + "/minecraft"))) {
                 subDirectory = "/" + manifest.getName() + "/minecraft";
             } else {
-                subDirectory = "/" + manifest.getName() + "/minecraft";
+                subDirectory = "/" + manifest.getName() + "/.minecraft";
             }
         }
 

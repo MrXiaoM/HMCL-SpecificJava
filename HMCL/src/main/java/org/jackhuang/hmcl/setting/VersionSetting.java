@@ -31,7 +31,7 @@ import org.jackhuang.hmcl.util.platform.Architecture;
 import org.jackhuang.hmcl.util.platform.JavaVersion;
 import org.jackhuang.hmcl.util.platform.OperatingSystem;
 import org.jackhuang.hmcl.util.platform.Platform;
-import org.jackhuang.hmcl.util.versioning.VersionNumber;
+import org.jackhuang.hmcl.util.versioning.GameVersionNumber;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -644,11 +644,11 @@ public final class VersionSetting implements Cloneable {
         launcherVisibilityProperty.set(launcherVisibility);
     }
 
-    public Task<JavaVersion> getJavaVersion(VersionNumber gameVersion, Version version) {
+    public Task<JavaVersion> getJavaVersion(GameVersionNumber gameVersion, Version version) {
         return getJavaVersion(gameVersion, version, true);
     }
 
-    public Task<JavaVersion> getJavaVersion(VersionNumber gameVersion, Version version, boolean checkJava) {
+    public Task<JavaVersion> getJavaVersion(GameVersionNumber gameVersion, Version version, boolean checkJava) {
         return Task.runAsync(Schedulers.javafx(), () -> {
             if (StringUtils.isBlank(getJava())) {
                 setJava(StringUtils.isBlank(getJavaDir()) ? "Auto" : "Custom");
@@ -844,6 +844,7 @@ public final class VersionSetting implements Cloneable {
             vs.setHeight(Optional.ofNullable(obj.get("height")).map(JsonElement::getAsJsonPrimitive).map(this::parseJsonPrimitive).orElse(0));
             vs.setJavaDir(Optional.ofNullable(obj.get("javaDir")).map(JsonElement::getAsString).orElse(""));
             vs.setPreLaunchCommand(Optional.ofNullable(obj.get("precalledCommand")).map(JsonElement::getAsString).orElse(""));
+            vs.setPostExitCommand(Optional.ofNullable(obj.get("postExitCommand")).map(JsonElement::getAsString).orElse(""));
             vs.setServerIp(Optional.ofNullable(obj.get("serverIp")).map(JsonElement::getAsString).orElse(""));
             vs.setJava(Optional.ofNullable(obj.get("java")).map(JsonElement::getAsString).orElse(""));
             vs.setWrapper(Optional.ofNullable(obj.get("wrapper")).map(JsonElement::getAsString).orElse(""));

@@ -30,9 +30,9 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
@@ -58,19 +58,19 @@ import org.jackhuang.hmcl.upgrade.UpdateChecker;
 import org.jackhuang.hmcl.upgrade.UpdateHandler;
 import org.jackhuang.hmcl.util.javafx.BindingMapping;
 import org.jackhuang.hmcl.util.javafx.MappedObservableList;
-import org.jackhuang.hmcl.util.platform.JavaVersion;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.IntStream;
 
 import static org.jackhuang.hmcl.setting.ConfigHolder.config;
 import static org.jackhuang.hmcl.ui.FXUtils.SINE;
+import static org.jackhuang.hmcl.ui.FXUtils.runInFX;
 import static org.jackhuang.hmcl.util.i18n.I18n.i18n;
 
 public final class MainPage extends StackPane implements DecoratorPage {
+    private static final String ANNOUNCEMENT = "announcement";
+
     private final ReadOnlyObjectWrapper<State> state = new ReadOnlyObjectWrapper<>();
 
     private final PopupMenu menu = new PopupMenu();
@@ -83,7 +83,7 @@ public final class MainPage extends StackPane implements DecoratorPage {
     private final ObservableList<Node> versionNodes;
     private Profile profile;
 
-    private final VBox announcementPane;
+    private VBox announcementPane;
     private final StackPane updatePane;
     private final JFXButton menuButton;
 
@@ -92,18 +92,7 @@ public final class MainPage extends StackPane implements DecoratorPage {
         titleNode.setPadding(new Insets(0, 0, 0, 2));
         titleNode.setAlignment(Pos.CENTER_LEFT);
 
-        ImageView titleIcon = new ImageView();
-        if (JavaVersion.CURRENT_JAVA.getParsedVersion() < 9) {
-            // JavaFX 8 has some problems with @2x images
-            // Force load the original icon
-            try (InputStream is = MainPage.class.getResourceAsStream("/assets/img/icon.png")) {
-                titleIcon.setImage(new Image(is, 20, 20, false, false));
-            } catch (IOException ignored) {
-            }
-        } else {
-            titleIcon.setImage(new Image("/assets/img/icon.png", 20, 20, false, false));
-        }
-
+        ImageView titleIcon = new ImageView(FXUtils.newBuiltinImage("/assets/img/icon-title.png"));
         Label titleLabel = new Label(Metadata.FULL_TITLE);
         titleLabel.getStyleClass().add("jfx-decorator-title");
         titleNode.getChildren().setAll(titleIcon, titleLabel);
@@ -112,7 +101,15 @@ public final class MainPage extends StackPane implements DecoratorPage {
 
         setPadding(new Insets(20));
 
-        announcementPane = new VBox(16);
+        if (Metadata.isNightly() || (Metadata.isDev() && !Objects.equals(Metadata.VERSION, config().getShownTips().get(ANNOUNCEMENT)))) {
+            announcementPane = new VBox(16);
+            if (Metadata.isNightly()) {
+                announcementPane.getChildren().add(new AnnouncementCard(i18n("update.channel.nightly.title"), i18n("update.channel.nightly.hint")));
+            } else if (Metadata.isDev()) {
+                announcementPane.getChildren().add(new AnnouncementCard(i18n("update.channel.dev.title"), i18n("update.channel.dev.hint")));
+            }
+            getChildren().add(announcementPane);
+        }
 
         updatePane = new StackPane();
         updatePane.setVisible(false);
@@ -131,7 +128,7 @@ public final class MainPage extends StackPane implements DecoratorPage {
             StackPane.setMargin(hBox, new Insets(9, 12, 9, 16));
             {
                 Label lblIcon = new Label();
-                lblIcon.setGraphic(SVG.update(Theme.whiteFillBinding(), 20, 20));
+                lblIcon.setGraphic(SVG.UPDATE.createIcon(Theme.whiteFill(), 20, 20));
 
                 TwoLineListItem prompt = new TwoLineListItem();
                 prompt.setSubtitle(i18n("update.bubble.subtitle"));
@@ -143,7 +140,7 @@ public final class MainPage extends StackPane implements DecoratorPage {
             }
 
             JFXButton closeUpdateButton = new JFXButton();
-            closeUpdateButton.setGraphic(SVG.close(Theme.whiteFillBinding(), 10, 10));
+            closeUpdateButton.setGraphic(SVG.CLOSE.createIcon(Theme.whiteFill(), 10, 10));
             StackPane.setAlignment(closeUpdateButton, Pos.TOP_RIGHT);
             closeUpdateButton.getStyleClass().add("toggle-icon-tiny");
             StackPane.setMargin(closeUpdateButton, new Insets(5));
@@ -212,16 +209,17 @@ public final class MainPage extends StackPane implements DecoratorPage {
             menuButton.setOnMouseClicked(e -> onMenu());
             menuButton.setClip(new Rectangle(211, -100, 100, 200));
             StackPane graphic = new StackPane();
-            Node svg = SVG.triangle(Theme.foregroundFillBinding(), 10, 10);
+            Node svg = SVG.TRIANGLE.createIcon(Theme.foregroundFillBinding(), 10, 10);
             StackPane.setAlignment(svg, Pos.CENTER_RIGHT);
             graphic.getChildren().setAll(svg);
             graphic.setTranslateX(12);
+            runInFX(() -> FXUtils.installFastTooltip(menuButton, i18n("version.switch")));
             menuButton.setGraphic(graphic);
 
             launchPane.getChildren().setAll(launchButton, separator, menuButton);
         }
 
-        getChildren().setAll(announcementPane, updatePane, launchPane);
+        getChildren().addAll(updatePane, launchPane);
 
         menu.setMaxHeight(365);
         menu.setMaxWidth(545);
@@ -302,6 +300,16 @@ public final class MainPage extends StackPane implements DecoratorPage {
     private void closeUpdateBubble() {
         showUpdate.unbind();
         showUpdate.set(false);
+    }
+
+    public void hideAnnouncementPane() {
+        if (announcementPane != null) {
+            config().getShownTips().put(ANNOUNCEMENT, Metadata.VERSION);
+            Pane parent = (Pane) announcementPane.getParent();
+            if (parent != null)
+                parent.getChildren().remove(announcementPane);
+            announcementPane = null;
+        }
     }
 
     @Override

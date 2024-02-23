@@ -112,6 +112,12 @@ public final class Config implements Cloneable, Observable {
     @SerializedName("proxyPassword")
     private StringProperty proxyPass = new SimpleStringProperty();
 
+    @SerializedName("x")
+    private DoubleProperty x = new SimpleDoubleProperty();
+
+    @SerializedName("y")
+    private DoubleProperty y = new SimpleDoubleProperty();
+
     @SerializedName("width")
     private DoubleProperty width = new SimpleDoubleProperty();
 
@@ -125,13 +131,13 @@ public final class Config implements Cloneable, Observable {
     private ObjectProperty<SupportedLocale> localization = new SimpleObjectProperty<>(Locales.DEFAULT);
 
     @SerializedName("autoDownloadThreads")
-    private BooleanProperty autoDownloadThreads = new SimpleBooleanProperty(false);
+    private BooleanProperty autoDownloadThreads = new SimpleBooleanProperty(true);
 
     @SerializedName("downloadThreads")
     private IntegerProperty downloadThreads = new SimpleIntegerProperty(64);
 
     @SerializedName("downloadType")
-    private StringProperty downloadType = new SimpleStringProperty("mcbbs");
+    private StringProperty downloadType = new SimpleStringProperty(DownloadProviders.DEFAULT_RAW_PROVIDER_ID);
 
     @SerializedName("autoChooseDownloadType")
     private BooleanProperty autoChooseDownloadType = new SimpleBooleanProperty(true);
@@ -158,7 +164,7 @@ public final class Config implements Cloneable, Observable {
     private StringProperty launcherFontFamily = new SimpleStringProperty();
 
     @SerializedName("logLines")
-    private IntegerProperty logLines = new SimpleIntegerProperty(100);
+    private IntegerProperty logLines = new SimpleIntegerProperty(1000);
 
     @SerializedName("titleTransparent")
     private BooleanProperty titleTransparent = new SimpleBooleanProperty(false);
@@ -193,6 +199,9 @@ public final class Config implements Cloneable, Observable {
 
     @SerializedName("animationDisabled")
     private BooleanProperty animationDisabled = new SimpleBooleanProperty();
+
+    @SerializedName("shownTips")
+    private ObservableMap<String, Object> shownTips = FXCollections.observableHashMap();
 
     private transient ObservableHelper helper = new ObservableHelper(this);
 
@@ -374,6 +383,30 @@ public final class Config implements Cloneable, Observable {
 
     public StringProperty proxyPassProperty() {
         return proxyPass;
+    }
+
+    public double getX() {
+        return x.get();
+    }
+
+    public DoubleProperty xProperty() {
+        return x;
+    }
+
+    public void setX(double x) {
+        this.x.set(x);
+    }
+
+    public double getY() {
+        return y.get();
+    }
+
+    public DoubleProperty yProperty() {
+        return y;
+    }
+
+    public void setY(double y) {
+        this.y.set(y);
     }
 
     public double getWidth() {
@@ -638,5 +671,9 @@ public final class Config implements Cloneable, Observable {
 
     public void setPromptedVersion(String promptedVersion) {
         this.promptedVersion.set(promptedVersion);
+    }
+
+    public ObservableMap<String, Object> getShownTips() {
+        return shownTips;
     }
 }

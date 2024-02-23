@@ -548,7 +548,7 @@
 }
 
 .jfx-tool-bar.gray-background Label {
-    -fx-text-fill: BLACK;
+    /* -fx-text-fill: BLACK; */
 }
 
 .jfx-tool-bar .jfx-options-burger {
@@ -1139,6 +1139,10 @@
 
 .log-window-list-cell:trace {
     -fx-background-color: #EEE9E0;
+}
+
+.log-window-list-cell:selected {
+    -fx-background-color: #C4C4C4;
 }
 
 /*******************************************************************************

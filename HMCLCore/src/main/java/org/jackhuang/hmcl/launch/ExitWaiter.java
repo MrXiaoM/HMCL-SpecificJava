@@ -24,13 +24,13 @@ import org.jackhuang.hmcl.event.ProcessStoppedEvent;
 import org.jackhuang.hmcl.util.Log4jLevel;
 import org.jackhuang.hmcl.util.StringUtils;
 import org.jackhuang.hmcl.util.platform.ManagedProcess;
+import org.jackhuang.hmcl.util.platform.OperatingSystem;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.function.BiConsumer;
 
 /**
- *
  * @author huangyuhui
  */
 final class ExitWaiter implements Runnable {
@@ -69,9 +69,17 @@ final class ExitWaiter implements Runnable {
                     "A fatal exception has occurred. Program will exit.")) {
                 EventBus.EVENT_BUS.fireEvent(new JVMLaunchFailedEvent(this, process));
                 exitType = ProcessListener.ExitType.JVM_ERROR;
-            } else if (exitCode != 0 || StringUtils.containsOne(errorLines, "Unable to launch")) {
+            } else if (exitCode != 0 || StringUtils.containsOne(errorLines,
+                    "Someone is closing me!",
+                    "Crash report saved to", "Could not save crash report to", "This crash report has been saved to:",
+                    "Unable to launch", "An exception was thrown, the game will display an error screen and halt.")) {
                 EventBus.EVENT_BUS.fireEvent(new ProcessExitedAbnormallyEvent(this, process));
-                exitType = ProcessListener.ExitType.APPLICATION_ERROR;
+
+                if (exitCode == 137 && OperatingSystem.CURRENT_OS.isLinuxOrBSD()) {
+                    exitType = ProcessListener.ExitType.SIGKILL;
+                } else {
+                    exitType = ProcessListener.ExitType.APPLICATION_ERROR;
+                }
             } else {
                 exitType = ProcessListener.ExitType.NORMAL;
             }

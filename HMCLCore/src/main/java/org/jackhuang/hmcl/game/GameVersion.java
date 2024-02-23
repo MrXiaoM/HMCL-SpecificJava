@@ -42,14 +42,14 @@ import static org.jackhuang.hmcl.util.Logging.LOG;
 /**
  * @author huangyuhui
  */
-public final class GameVersion {
+final class GameVersion {
     private GameVersion() {
     }
 
     private static Optional<String> getVersionFromJson(InputStream versionJson) {
         try {
             Map<?, ?> version = JsonUtils.fromNonNullJsonFully(versionJson, Map.class);
-            return tryCast(version.get("name"), String.class);
+            return tryCast(version.get("id"), String.class);
         } catch (IOException | JsonParseException e) {
             LOG.log(Level.WARNING, "Failed to parse version.json", e);
             return Optional.empty();
