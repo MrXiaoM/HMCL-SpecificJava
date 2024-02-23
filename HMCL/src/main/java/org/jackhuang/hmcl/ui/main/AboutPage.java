@@ -37,7 +37,7 @@ public class AboutPage extends StackPane {
             server.setImage(FXUtils.newBuiltinImage("/assets/img/icon.png"));
             server.setTitle("SweetRiceMC 客户端启动器");
             server.setSubtitle("基于 HMCL 修改");
-            server.setExternalLink("https://pds.ink");
+            server.setExternalLink("https://www.pds.ink");
 
             IconedTwoLineListItem dev = new IconedTwoLineListItem();
             dev.setImage(FXUtils.newBuiltinImage("/assets/img/mrxiaom.png"));
@@ -46,7 +46,7 @@ public class AboutPage extends StackPane {
             dev.setExternalLink("https://space.bilibili.com/330771760");
 
             IconedTwoLineListItem launcher = new IconedTwoLineListItem();
-            launcher.setImage(FXUtils.newBuiltinImage("/assets/img/icon.png"));
+            launcher.setImage(FXUtils.newBuiltinImage("/assets/img/icon-title@2x.png"));
             launcher.setTitle("Hello Minecraft! Launcher");
             launcher.setSubtitle(Metadata.VERSION);
             launcher.setExternalLink("https://hmcl.huangyuhui.net");
@@ -116,7 +116,7 @@ public class AboutPage extends StackPane {
             contributors.setExternalLink("https://github.com/HMCL-dev/HMCL/graphs/contributors");
 
             IconedTwoLineListItem users = new IconedTwoLineListItem();
-            users.setImage(FXUtils.newBuiltinImage("/assets/img/icon.png"));
+            users.setImage(FXUtils.newBuiltinImage("/assets/img/icon-title@2x.png"));
             users.setTitle(i18n("about.thanks_to.users"));
             users.setSubtitle(i18n("about.thanks_to.users.statement"));
             users.setExternalLink("https://hmcl.huangyuhui.net/api/redirect/sponsor");
