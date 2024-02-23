@@ -17,6 +17,7 @@ import java.util.Base64;
 import java.util.List;
 
 public class ResourcePackUpdater {
+    public static final boolean enable = true;
     private static final String OWNER = "SweetRiceMC";
     private static final String REPO = "ResourcePack";
     private static final String REMOTE_PATH = "/resource.zip";

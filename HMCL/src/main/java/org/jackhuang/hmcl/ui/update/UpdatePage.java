@@ -108,18 +108,8 @@ public class UpdatePage extends DecoratorAnimatedPage implements DecoratorPage {
     }
 
     private void updateResourcePack() {
-        File mcDir = Profiles.getSelectedProfile().getRepository().getRunDirectory(versionId);
-        File resFile = ResourcePackUpdater.getResourcePackFile(mcDir);
-        File shaFile = ResourcePackUpdater.getResourcePackSHA1File(mcDir);
         Controllers.taskDialog(
-                Task.runAsync(() -> {
-                    String sha1 = ResourcePackUpdater.getSHA1FromApi();
-                    FileUtils.writeText(shaFile, sha1);
-                }).thenComposeAsync(() -> {
-                    FileDownloadTask task = new FileDownloadTask(ResourcePackUpdater.getAllDownloadLinks(), resFile);
-                    task.setName("服务器材质包");
-                    return task;
-                }).whenComplete(Schedulers.javafx(), exception -> {
+                resourceUpdateTask(versionId).whenComplete(Schedulers.javafx(), exception -> {
                     if (exception != null) {
                         if (exception instanceof CancellationException) {
                             Controllers.showToast(i18n("message.cancelled"));
@@ -130,6 +120,25 @@ public class UpdatePage extends DecoratorAnimatedPage implements DecoratorPage {
                         Controllers.showToast(i18n("install.success"));
                     }
                 }), i18n("message.downloading"), TaskCancellationAction.NORMAL);
+    }
+
+    public static Task<Void> resourceUpdateTask(String versionId) {
+        if (!ResourcePackUpdater.enable) return null;
+        File mcDir = Profiles.getSelectedProfile().getRepository().getRunDirectory(versionId);
+        File resFile = ResourcePackUpdater.getResourcePackFile(mcDir);
+        File shaFile = ResourcePackUpdater.getResourcePackSHA1File(mcDir);
+        return Task.composeAsync(() -> {
+            String sha1 = ResourcePackUpdater.getSHA1FromApi();
+            String localSha1 = shaFile.exists() ? FileUtils.readText(shaFile) : "";
+            if (localSha1.equals(sha1)) {
+                return null;
+            }
+            FileUtils.writeText(shaFile, sha1);
+
+            FileDownloadTask task = new FileDownloadTask(ResourcePackUpdater.getAllDownloadLinks(), resFile);
+            task.setName("服务器材质包");
+            return task;
+        });
     }
 
     private static void download(Profile profile, @Nullable String version, RemoteMod.Version file, String subdirectoryName) {

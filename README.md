@@ -4,6 +4,8 @@
 
 为了方便后来者为自己的服务器去改出一个稳定的、好看的启动器，以下是部分提示。
 
+如果你不需要本服务器的材质包下载功能，请到 `HMCL/src/main/java/org/jackhuang/hmcl/util/ResourcePackUpdater.java` 将 `enable` 的值设为 `false`。
+
 `org.jackhuang.hmcl.ui.main.MainPage` 中含有主界面的欢迎信息。其实光是改的测试版提示，自由度都挺高的，不知道为什么 HMCL 原版没加主页编辑。
 
 `org.jaackhuang.hmcl.Metadata` 中有启动器名称、缓存目录、游戏协议地址等信息。其中我添加了 `EULA_URL_2` 为我服务器的玩家协议，将 hmcl 主要缓存目录从 `%appdata%/.hmcl` 改为了 `%appdata%/.hmcl-sweetrice`。推荐更改这个目录，这样才能在初次打开启动器时弹出同意协议的提示框。
