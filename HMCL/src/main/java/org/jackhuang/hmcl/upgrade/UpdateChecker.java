@@ -97,28 +97,6 @@ public final class UpdateChecker {
     }
 
     public static void requestCheckUpdate(UpdateChannel channel) {
-        Platform.runLater(() -> {
-            if (isCheckingUpdate())
-                return;
-            checkingUpdate.set(true);
 
-            thread(() -> {
-                RemoteVersion result = null;
-                try {
-                    result = checkUpdate(channel);
-                    LOG.info("Latest version (" + channel + ") is " + result);
-                } catch (IOException e) {
-                    LOG.log(Level.WARNING, "Failed to check for update", e);
-                }
-
-                RemoteVersion finalResult = result;
-                Platform.runLater(() -> {
-                    checkingUpdate.set(false);
-                    if (finalResult != null) {
-                        latestVersion.set(finalResult);
-                    }
-                });
-            }, "Update Checker", true);
-        });
     }
 }

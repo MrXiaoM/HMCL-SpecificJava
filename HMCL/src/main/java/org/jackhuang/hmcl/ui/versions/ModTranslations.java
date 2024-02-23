@@ -163,7 +163,7 @@ public enum ModTranslations {
         for (Mod mod : mods) {
             for (String id : mod.getModIds()) {
                 if (StringUtils.isNotBlank(id) && !"examplemod".equals(id)) {
-                    modIdMap.put(id, mod);
+                    if (!modIdMap.containsKey(id)) modIdMap.put(id, mod);
                 }
             }
         }

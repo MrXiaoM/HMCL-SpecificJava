@@ -33,6 +33,18 @@ public class AboutPage extends StackPane {
     public AboutPage() {
         ComponentList about = new ComponentList();
         {
+            IconedTwoLineListItem server = new IconedTwoLineListItem();
+            server.setImage(new Image("/assets/img/icon.png"));
+            server.setTitle("SweetRiceMC 客户端启动器");
+            server.setSubtitle("基于 HMCL 修改");
+            server.setExternalLink("https://pds.ink");
+
+            IconedTwoLineListItem dev = new IconedTwoLineListItem();
+            dev.setImage(new Image("/assets/img/mrxiaom.png"));
+            dev.setTitle("人间工作 (MrXiaoM)");
+            dev.setSubtitle("SweetRice 服务器总技术");
+            dev.setExternalLink("https://space.bilibili.com/330771760");
+
             IconedTwoLineListItem launcher = new IconedTwoLineListItem();
             launcher.setImage(FXUtils.newBuiltinImage("/assets/img/icon.png"));
             launcher.setTitle("Hello Minecraft! Launcher");
@@ -45,7 +57,7 @@ public class AboutPage extends StackPane {
             author.setSubtitle(i18n("about.author.statement"));
             author.setExternalLink("https://space.bilibili.com/1445341");
 
-            about.getContent().setAll(launcher, author);
+            about.getContent().setAll(server, dev, launcher, author);
         }
 
         ComponentList thanks = new ComponentList();
@@ -174,7 +186,17 @@ public class AboutPage extends StackPane {
             openSource.setSubtitle(i18n("about.open_source.statement"));
             openSource.setExternalLink("https://github.com/HMCL-dev/HMCL");
 
-            legal.getContent().setAll(copyright, claim, openSource);
+            IconedTwoLineListItem openSourceFork = new IconedTwoLineListItem();
+            openSourceFork.setTitle(i18n("about.open_source"));
+            openSourceFork.setSubtitle("GPL v3 (Fork: https://github.com/MrXiaoM/HMCL-SpecificJava)");
+            openSourceFork.setExternalLink("https://github.com/MrXiaoM/HMCL-SpecificJava");
+
+            IconedTwoLineListItem license = new IconedTwoLineListItem();
+            license.setTitle("SweetRice 玩家协议");
+            license.setSubtitle(i18n("about.claim.statement"));
+            license.setExternalLink(Metadata.EULA_URL_2);
+
+            legal.getContent().setAll(copyright, claim, openSource, openSourceFork, license);
         }
 
         VBox content = new VBox(16);

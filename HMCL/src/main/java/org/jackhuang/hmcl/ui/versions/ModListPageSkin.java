@@ -147,7 +147,9 @@ class ModListPageSkin extends SkinBase<ModListPage> {
                     createToolbarButton2(i18n("button.select_all"), SVG.SELECT_ALL, () ->
                             listView.getSelectionModel().selectAll()),
                     createToolbarButton2(i18n("button.cancel"), SVG.CANCEL, () ->
-                            listView.getSelectionModel().clearSelection())
+                            listView.getSelectionModel().clearSelection()),
+                    createToolbarButton2("导出 package.json", SVG.PENCIL, () ->
+                            skinnable.exportPackageJson(listView.getSelectionModel().getSelectedItems()))
             );
 
             FXUtils.onChangeAndOperate(listView.getSelectionModel().selectedItemProperty(),

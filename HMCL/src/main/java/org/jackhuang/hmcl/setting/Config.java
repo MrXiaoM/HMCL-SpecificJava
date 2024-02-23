@@ -77,7 +77,7 @@ public final class Config implements Cloneable, Observable {
     private StringProperty selectedProfile = new SimpleStringProperty("");
 
     @SerializedName("backgroundType")
-    private ObjectProperty<EnumBackgroundImage> backgroundImageType = new SimpleObjectProperty<>(EnumBackgroundImage.DEFAULT);
+    private ObjectProperty<EnumBackgroundImage> backgroundImageType = new SimpleObjectProperty<>(EnumBackgroundImage.CLASSIC);
 
     @SerializedName("bgpath")
     private StringProperty backgroundImage = new SimpleStringProperty();

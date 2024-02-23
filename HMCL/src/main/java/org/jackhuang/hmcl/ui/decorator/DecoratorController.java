@@ -172,7 +172,7 @@ public class DecoratorController {
                     image = tryLoadImage(backgroundImageUrl).orElse(null);
                 break;
             case CLASSIC:
-                image = newBuiltinImage("/assets/img/background-classic.jpg");
+                image = newBuiltinImage("/assets/img/background.jpg");
                 break;
             case TRANSLUCENT:
                 return new Background(new BackgroundFill(new Color(1, 1, 1, 0.5), CornerRadii.EMPTY, Insets.EMPTY));
@@ -197,7 +197,7 @@ public class DecoratorController {
         if (!image.isPresent()) {
             image = tryLoadImage(Paths.get("background.gif"));
         }
-        return image.orElseGet(() -> newBuiltinImage("/assets/img/background.jpg"));
+        return image.orElseGet(() -> newBuiltinImage("/assets/img/background.png"));
     }
 
     private Optional<Image> randomImageIn(Path imageDir) {

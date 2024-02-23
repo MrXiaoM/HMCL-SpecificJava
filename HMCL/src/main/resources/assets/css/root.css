@@ -128,11 +128,6 @@
     -fx-padding: 16;
 }
 
-.announcement .title {
-    -fx-font-size: 14px;
-    -fx-font-weight: BOLD;
-}
-
 .announcement JFXHyperlink, .announcement Text {
     -fx-font-size: 13px;
 }

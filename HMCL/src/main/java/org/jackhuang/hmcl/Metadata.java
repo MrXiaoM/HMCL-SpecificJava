@@ -30,19 +30,19 @@ import java.nio.file.Paths;
 public final class Metadata {
     private Metadata() {}
 
-    public static final String NAME = "HMCL";
-    public static final String FULL_NAME = "Hello Minecraft! Launcher";
+    public static final String NAME = "SRMC";
+    public static final String FULL_NAME = "SweetRiceMC";
     public static final String VERSION = System.getProperty("hmcl.version.override", JarUtils.getManifestAttribute("Implementation-Version", "@develop@"));
 
     public static final String TITLE = NAME + " " + VERSION;
     public static final String FULL_TITLE = FULL_NAME + " v" + VERSION;
 
-    public static final String HMCL_UPDATE_URL = System.getProperty("hmcl.update_source.override", "https://hmcl.huangyuhui.net/api/update_link");
     public static final String CONTACT_URL = "https://docs.hmcl.net/help.html";
     public static final String HELP_URL = "https://docs.hmcl.net";
     public static final String CHANGELOG_URL = "https://docs.hmcl.net/changelog/";
     public static final String PUBLISH_URL = "https://hmcl.huangyuhui.net";
     public static final String EULA_URL = "https://docs.hmcl.net/eula/hmcl.html";
+    public static final String EULA_URL_2 = "https://readme.4pr.top/rules.html";
 
     public static final String BUILD_CHANNEL = JarUtils.getManifestAttribute("Build-Channel", "nightly");
     public static final String GITHUB_SHA = JarUtils.getManifestAttribute("GitHub-SHA", null);
@@ -56,12 +56,12 @@ public final class Metadata {
             if (OperatingSystem.CURRENT_OS.isLinuxOrBSD()) {
                 String xdgData = System.getenv("XDG_DATA_HOME");
                 if (StringUtils.isNotBlank(xdgData)) {
-                    HMCL_DIRECTORY = Paths.get(xdgData, "hmcl").toAbsolutePath();
+                    HMCL_DIRECTORY = Paths.get(xdgData, "hmcl-sweetrice").toAbsolutePath();
                 } else {
-                    HMCL_DIRECTORY = Paths.get(System.getProperty("user.home", "."), ".local", "share", "hmcl").toAbsolutePath();
+                    HMCL_DIRECTORY = Paths.get(System.getProperty("user.home", "."), ".local", "share", "hmcl-sweetrice").toAbsolutePath();
                 }
             } else {
-                HMCL_DIRECTORY = OperatingSystem.getWorkingDirectory("hmcl");
+                HMCL_DIRECTORY = OperatingSystem.getWorkingDirectory("hmcl-sweetrice");
             }
         } else {
             HMCL_DIRECTORY = Paths.get(hmclHome).toAbsolutePath().normalize();
