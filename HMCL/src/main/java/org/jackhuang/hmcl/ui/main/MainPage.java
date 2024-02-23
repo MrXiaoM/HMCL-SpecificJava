@@ -100,7 +100,7 @@ public final class MainPage extends StackPane implements DecoratorPage {
         state.setValue(new State(null, titleNode, false, false, true));
 
         setPadding(new Insets(20));
-
+        /*
         if (Metadata.isNightly() || (Metadata.isDev() && !Objects.equals(Metadata.VERSION, config().getShownTips().get(ANNOUNCEMENT)))) {
             announcementPane = new VBox(16);
             if (Metadata.isNightly()) {
@@ -110,6 +110,19 @@ public final class MainPage extends StackPane implements DecoratorPage {
             }
             getChildren().add(announcementPane);
         }
+         */
+
+        announcementPane = new VBox();
+        announcementPane.getChildren().add(new AnnouncementCard(
+                "欢迎来到 SweetRice 服务器！在左侧添加账户，启动游戏吧~\n\n" +
+                "在这里，你可以打开游戏文件夹进行安装 Mod/材质包/光影 或者查看截图等等\n" +
+                folder("screenshots", "打开截图文件夹") + " | " +
+                folder("mods", "打开Mods文件夹") + " | " +
+                folder("resourcepacks", "打开材质包文件夹") + " | " +
+                folder("shaderpacks", "打开光影文件夹") +"\n\n" +
+                "加入玩家交流群：" + url("https://www.pds.ink/group", "937785954") + "\n" +
+                "请记住我们的服务器地址 " + url("https://www.pds.ink", "pds.ink")));
+        getChildren().add(announcementPane);
 
         updatePane = new StackPane();
         updatePane.setVisible(false);
@@ -233,21 +246,10 @@ public final class MainPage extends StackPane implements DecoratorPage {
         Bindings.bindContent(menu.getContent(), versionNodes);
     }
 
-    public MainPage() {
-        announcementPane.getChildren().add(new AnnouncementCard(
-                "欢迎来到 SweetRice 服务器！在左侧添加账户，启动游戏吧~\n\n" +
-                        "在这里，你可以打开游戏文件夹进行安装 Mod/材质包/光影 或者查看截图等等\n" +
-                        open("screenshots", "打开截图文件夹") + " | " +
-                        open("mods", "打开Mods文件夹") + " | " +
-                        open("resourcepacks", "打开材质包文件夹") + " | " +
-                        open("shaderpacks", "打开光影文件夹") +"\n\n" +
-                        "加入玩家交流群：" + url("https://www.pds.ink/group", "937785954") + "\n" +
-                        "请记住我们的服务器地址 " + url("https://www.pds.ink", "pds.ink")));
-    }
-    private String open(String folder, String text) {
+    private static String folder(String folder, String text) {
         return "<a href=\"hmcl://folder/.minecraft/versions/SweetRice/" + folder + "\">" + text + "</a>";
     }
-    private String url(String url, String text) {
+    private static String url(String url, String text) {
         return "<a href=\"" + url + "\">" + text + "</a>";
     }
 

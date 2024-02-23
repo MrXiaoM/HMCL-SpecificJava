@@ -110,7 +110,7 @@ class ModListUpdatePageSkin extends SkinBase<ModListUpdatePage> {
             HBox.setHgrow(searchField, Priority.ALWAYS);
             searchField.setOnAction(e -> search());
 
-            JFXButton closeSearchBar = createToolbarButton2(null, SVG::close,
+            JFXButton closeSearchBar = createToolbarButton2(null, SVG.CLOSE,
                     () -> {
                         changeToolbar(toolbarNormal);
 
@@ -123,10 +123,10 @@ class ModListUpdatePageSkin extends SkinBase<ModListUpdatePage> {
 
             // Toolbar Normal
             toolbarNormal.getChildren().setAll(
-                    createToolbarButton2(i18n("mods.check_updates"), SVG::update, skinnable::checkUpdates),
-                    createToolbarButton2("更新选中模组", SVG::downloadOutline, skinnable::download),
-                    createToolbarButton2(i18n("folder.mod"), SVG::folderOpen, skinnable::openModFolder),
-                    createToolbarButton2(i18n("search"), SVG::magnify, () -> changeToolbar(searchBar))
+                    createToolbarButton2(i18n("mods.check_updates"), SVG.UPDATE, skinnable::checkUpdates),
+                    createToolbarButton2("更新选中模组", SVG.DOWNLOAD_OUTLINE, skinnable::download),
+                    createToolbarButton2(i18n("folder.mod"), SVG.FOLDER_OPEN, skinnable::openModFolder),
+                    createToolbarButton2(i18n("search"), SVG.MAGNIFY, () -> changeToolbar(searchBar))
             );
 
             FXUtils.onChangeAndOperate(listView.getSelectionModel().selectedItemProperty(),
@@ -409,10 +409,10 @@ class ModListUpdatePageSkin extends SkinBase<ModListUpdatePage> {
             setSelectable();
 
             revealButton.getStyleClass().add("toggle-icon4");
-            revealButton.setGraphic(FXUtils.limitingSize(SVG.folderOutline(Theme.blackFillBinding(), 24, 24), 24, 24));
+            revealButton.setGraphic(FXUtils.limitingSize(SVG.FOLDER_OUTLINE.createIcon(Theme.blackFill(), 24, 24), 24, 24));
 
             infoButton.getStyleClass().add("toggle-icon4");
-            infoButton.setGraphic(FXUtils.limitingSize(SVG.informationOutline(Theme.blackFillBinding(), 24, 24), 24, 24));
+            infoButton.setGraphic(FXUtils.limitingSize(SVG.INFORMATION_OUTLINE.createIcon(Theme.blackFill(), 24, 24), 24, 24));
 
             container.getChildren().setAll(checkBox, content, revealButton, infoButton);
 

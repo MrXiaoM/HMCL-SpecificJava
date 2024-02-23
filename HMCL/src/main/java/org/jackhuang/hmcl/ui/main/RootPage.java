@@ -178,7 +178,7 @@ public class RootPage extends DecoratorAnimatedPage implements DecoratorPage {
 
             // sixth item in left sidebar
             AdvancedListItem updateItem = new AdvancedListItem();
-            updateItem.setLeftGraphic(wrap(SVG::server));
+            updateItem.setLeftGraphic(wrap(SVG.SERVER));
             updateItem.setActionButtonVisible(false);
             updateItem.setTitle("更新客户端");
             updateItem.setOnAction(e -> Controllers.navigate(Controllers.getUpdatePage()));

@@ -34,13 +34,13 @@ public class AboutPage extends StackPane {
         ComponentList about = new ComponentList();
         {
             IconedTwoLineListItem server = new IconedTwoLineListItem();
-            server.setImage(new Image("/assets/img/icon.png"));
+            server.setImage(FXUtils.newBuiltinImage("/assets/img/icon.png"));
             server.setTitle("SweetRiceMC 客户端启动器");
             server.setSubtitle("基于 HMCL 修改");
             server.setExternalLink("https://pds.ink");
 
             IconedTwoLineListItem dev = new IconedTwoLineListItem();
-            dev.setImage(new Image("/assets/img/mrxiaom.png"));
+            dev.setImage(FXUtils.newBuiltinImage("/assets/img/mrxiaom.png"));
             dev.setTitle("人间工作 (MrXiaoM)");
             dev.setSubtitle("SweetRice 服务器总技术");
             dev.setExternalLink("https://space.bilibili.com/330771760");

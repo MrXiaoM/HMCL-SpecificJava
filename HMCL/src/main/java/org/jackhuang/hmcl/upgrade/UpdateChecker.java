@@ -17,21 +17,11 @@
  */
 package org.jackhuang.hmcl.upgrade;
 
-import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.*;
 import javafx.beans.value.ObservableBooleanValue;
 import org.jackhuang.hmcl.Metadata;
-import org.jackhuang.hmcl.util.io.NetworkUtils;
-
-import java.io.IOException;
-import java.util.logging.Level;
-
-import static org.jackhuang.hmcl.util.Lang.mapOf;
-import static org.jackhuang.hmcl.util.Lang.thread;
-import static org.jackhuang.hmcl.util.Logging.LOG;
-import static org.jackhuang.hmcl.util.Pair.pair;
 
 public final class UpdateChecker {
     private UpdateChecker() {}
@@ -77,18 +67,6 @@ public final class UpdateChecker {
 
     public static ReadOnlyBooleanProperty checkingUpdateProperty() {
         return checkingUpdate.getReadOnlyProperty();
-    }
-
-    private static RemoteVersion checkUpdate(UpdateChannel channel) throws IOException {
-        if (!IntegrityChecker.DISABLE_SELF_INTEGRITY_CHECK && !IntegrityChecker.isSelfVerified()) {
-            throw new IOException("Self verification failed");
-        }
-
-        String url = NetworkUtils.withQuery(Metadata.HMCL_UPDATE_URL, mapOf(
-                pair("version", Metadata.VERSION),
-                pair("channel", channel.channelName)));
-
-        return RemoteVersion.fetch(channel, url);
     }
 
     private static boolean isDevelopmentVersion(String version) {

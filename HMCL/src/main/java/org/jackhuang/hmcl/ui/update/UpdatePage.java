@@ -90,13 +90,13 @@ public class UpdatePage extends DecoratorAnimatedPage implements DecoratorPage {
                     .startCategory(i18n("download.content"))
                     .addNavigationDrawerItem(item -> {
                         item.setTitle(i18n("mods"));
-                        item.setLeftGraphic(wrap(SVG::puzzle));
+                        item.setLeftGraphic(wrap(SVG.PUZZLE));
                         item.activeProperty().bind(tab.getSelectionModel().selectedItemProperty().isEqualTo(modTab));
                         item.setOnAction(e -> tab.select(modTab));
                     })
                     .addNavigationDrawerItem(item -> {
                         item.setTitle(i18n("resourcepack"));
-                        item.setLeftGraphic(wrap(SVG::textureBox));
+                        item.setLeftGraphic(wrap(SVG.TEXTURE_BOX));
                         item.activeProperty().set(false);
                         item.setOnAction(e -> updateResourcePack());
                     });
