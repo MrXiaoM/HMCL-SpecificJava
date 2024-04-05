@@ -117,7 +117,11 @@ public class UpdatePage extends DecoratorAnimatedPage implements DecoratorPage {
                             Controllers.dialog(DownloadProviders.localizeErrorMessage(exception), i18n("install.failed.downloading"), MessageDialogPane.MessageType.ERROR);
                         }
                     } else {
-                        if (resourceLatest) {
+                        if (resourceCheckFail) {
+                            resourceCheckFail = false;
+                            Controllers.showToast(i18n("install.failed.downloading"));
+                        } else if (resourceLatest) {
+                            resourceLatest = false;
                             Controllers.showToast(i18n("update.latest"));
                         } else {
                             Controllers.showToast(i18n("install.success"));
@@ -125,8 +129,10 @@ public class UpdatePage extends DecoratorAnimatedPage implements DecoratorPage {
                     }
                 }), i18n("message.downloading"), TaskCancellationAction.NORMAL);
     }
+    private static boolean resourceCheckFail = false;
     private static boolean resourceLatest = false;
     public static Task<Void> resourceUpdateTask(String versionId) {
+        resourceCheckFail = false;
         resourceLatest = false;
         if (!ResourcePackUpdater.enable) return Task.runAsync(() -> {});
         File mcDir = Profiles.getSelectedProfile().getRepository().getRunDirectory(versionId);
@@ -134,6 +140,10 @@ public class UpdatePage extends DecoratorAnimatedPage implements DecoratorPage {
         File shaFile = ResourcePackUpdater.getResourcePackSHA1File(mcDir);
         return Task.composeAsync(() -> {
             String sha1 = ResourcePackUpdater.getSHA1FromApi();
+            if (sha1 == null) {
+                resourceCheckFail = true;
+                return null;
+            }
             String localSha1 = shaFile.exists() ? FileUtils.readText(shaFile) : "";
             if (localSha1.equals(sha1)) {
                 resourceLatest = true;

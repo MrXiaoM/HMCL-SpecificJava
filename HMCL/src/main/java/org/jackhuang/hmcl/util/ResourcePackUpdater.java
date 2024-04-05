@@ -54,19 +54,24 @@ public class ResourcePackUpdater {
         }
         return list;
     }
-    public static String getSHA1FromApi() throws IOException {
-        HttpRequest.HttpGetRequest httpGet = HttpRequest.HttpGetRequest.GET("https://api.github.com/repos/" + OWNER + "/" + REPO + "/commits?path="
-                + URLEncoder.encode(REMOTE_PATH, "utf-8") + "&per_page=1&page=1");
-        httpGet.header("content-type", "application/json");
-        String result = httpGet.getString();
+    public static String getSHA1FromApi() {
+        try {
+            HttpRequest.HttpGetRequest httpGet = HttpRequest.HttpGetRequest.GET("https://api.github.com/repos/" + OWNER + "/" + REPO + "/commits?path="
+                    + URLEncoder.encode(REMOTE_PATH, "utf-8") + "&per_page=1&page=1");
+            httpGet.header("content-type", "application/json");
+            String result = httpGet.getString();
 
-        JsonElement element = JsonParser.parseString(result);
-        JsonArray array = element.isJsonArray() ? element.getAsJsonArray() : null;
-        if (array == null || array.size() == 0) {
+            JsonElement element = JsonParser.parseString(result);
+            JsonArray array = element.isJsonArray() ? element.getAsJsonArray() : null;
+            if (array == null || array.size() == 0) {
+                return null;
+            }
+            JsonObject obj = array.get(0).getAsJsonObject();
+            return obj.get("sha").getAsString();
+        } catch (Throwable t) {
+            t.printStackTrace();
             return null;
         }
-        JsonObject obj = array.get(0).getAsJsonObject();
-        return obj.get("sha").getAsString();
     }
 
     static List<String> fetchExtraUpdateLinks() {
