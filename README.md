@@ -1,20 +1,16 @@
-# SweetRiceMC
+# NeoWorld
 
 服务器专用客户端启动器 (HMCL fork)
 
 为了方便后来者为自己的服务器去改出一个稳定的、好看的启动器，以下是部分提示。
 
-如果你不需要本服务器的材质包下载功能，请到 `HMCL/src/main/java/org/jackhuang/hmcl/util/ResourcePackUpdater.java` 将 `enable` 的值设为 `false`。
-
 `org.jackhuang.hmcl.ui.main.MainPage` 中含有主界面的欢迎信息。其实光是改的测试版提示，自由度都挺高的，不知道为什么 HMCL 原版没加主页编辑。
 
-`org.jaackhuang.hmcl.Metadata` 中有启动器名称、缓存目录、游戏协议地址等信息。其中我添加了 `EULA_URL_2` 为我服务器的玩家协议，将 hmcl 主要缓存目录从 `%appdata%/.hmcl` 改为了 `%appdata%/.hmcl-sweetrice`。推荐更改这个目录，这样才能在初次打开启动器时弹出同意协议的提示框。
-
-`org.jackhuang.hmcl.ui.update` 包中的类是“更新客户端”的界面，`org.jackhuang.hmcl.util.GithubFileFetch` 是客户端更新的下载源，下载源使用 Gitee 加速，Github 兜底。
+`org.jaackhuang.hmcl.Metadata` 中有启动器名称、缓存目录、游戏协议地址等信息。其中我添加了 `EULA_URL_2` 为我服务器的玩家协议，将 hmcl 主要缓存目录从 `%appdata%/.hmcl` 改为了 `%appdata%/.hmcl-neoworld`。推荐更改这个目录，这样才能在初次打开启动器时弹出同意协议的提示框。
 
 默认主题色请见 `org.jackhuang.hmcl.setting.Theme`，以及 assets 里的 css 文件 (.root 的 -fx-base-color)。图片资源都在 assets 里不解释。
 
-关于页面的 `SweetRiceMC 客户端启动器` 标识在 `org.jackhuang.hmcl.ui.main.AboutPage`，其中也包含了我的版权信息和 HMCL 原作者黄鱼的版权信息，你可以增加你的版权信息或者修改我的版权信息 Subtitle，但不能删除。尽管这不是强制性的，是道德约束，我也要在这里提一下。
+“关于”页面的 `NeoWorld 客户端启动器` 标识在 `org.jackhuang.hmcl.ui.main.AboutPage`，其中也包含了我的版权信息和 HMCL 原作者黄鱼的版权信息，你可以增加你的版权信息或者修改我的版权信息 Subtitle，但不能删除。尽管这不是强制性的，是道德约束，我也要在这里提一下。
 
 如需正版登录和 CurseForge 下载服务，请在编译时在参数中填写相关的 token。
 

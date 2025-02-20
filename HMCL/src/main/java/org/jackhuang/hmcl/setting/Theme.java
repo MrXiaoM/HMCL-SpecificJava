@@ -43,7 +43,7 @@ import static org.jackhuang.hmcl.setting.ConfigHolder.config;
 
 @JsonAdapter(Theme.TypeAdapter.class)
 public class Theme {
-    public static final Theme BLUE = new Theme("blue", "#b3801a");
+    public static final Theme BLUE = new Theme("blue", "#4d8ac1");
     public static final Color BLACK = Color.web("#292929");
     public static final Color[] SUGGESTED_COLORS = new Color[]{
             Color.web("#3D6DA3"), // blue
@@ -52,7 +52,7 @@ public class Theme {
             Color.web("#E67E22"), // orange
             Color.web("#9C27B0"), // purple
             Color.web("#B71C1C"), // red
-            Color.web("#b3801a"),
+            Color.web("#4d8ac1"),
     };
 
     private static Charset cssCharset;

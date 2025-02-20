@@ -34,7 +34,6 @@ import org.jackhuang.hmcl.ui.SVG;
 import org.jackhuang.hmcl.ui.account.AccountAdvancedListItem;
 import org.jackhuang.hmcl.ui.construct.AdvancedListBox;
 import org.jackhuang.hmcl.ui.construct.AdvancedListItem;
-import org.jackhuang.hmcl.ui.construct.JFXHyperlink;
 import org.jackhuang.hmcl.ui.construct.MessageDialogPane;
 import org.jackhuang.hmcl.ui.decorator.DecoratorAnimatedPage;
 import org.jackhuang.hmcl.ui.decorator.DecoratorPage;
@@ -176,13 +175,6 @@ public class RootPage extends DecoratorAnimatedPage implements DecoratorPage {
             launcherSettingsItem.setTitle(i18n("settings"));
             launcherSettingsItem.setOnAction(e -> Controllers.navigate(Controllers.getSettingsPage()));
 
-            // sixth item in left sidebar
-            AdvancedListItem updateItem = new AdvancedListItem();
-            updateItem.setLeftGraphic(wrap(SVG.SERVER));
-            updateItem.setActionButtonVisible(false);
-            updateItem.setTitle("更新客户端");
-            updateItem.setOnAction(e -> Controllers.navigate(Controllers.getUpdatePage()));
-
             // the left sidebar
             AdvancedListBox sideBar = new AdvancedListBox()
                     .startCategory(i18n("account").toUpperCase(Locale.ROOT))
@@ -192,8 +184,7 @@ public class RootPage extends DecoratorAnimatedPage implements DecoratorPage {
                     .add(gameItem)
                     .add(downloadItem)
                     .startCategory(i18n("settings.launcher.general").toUpperCase(Locale.ROOT))
-                    .add(launcherSettingsItem)
-                    .add(updateItem);
+                    .add(launcherSettingsItem);
 
             // the root page, with the sidebar in left, navigator in center.
             setLeft(sideBar);

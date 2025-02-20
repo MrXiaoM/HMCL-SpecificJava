@@ -49,7 +49,6 @@ import org.jackhuang.hmcl.ui.download.DownloadPage;
 import org.jackhuang.hmcl.ui.download.ModpackInstallWizardProvider;
 import org.jackhuang.hmcl.ui.main.LauncherSettingsPage;
 import org.jackhuang.hmcl.ui.main.RootPage;
-import org.jackhuang.hmcl.ui.update.UpdatePage;
 import org.jackhuang.hmcl.ui.versions.GameListPage;
 import org.jackhuang.hmcl.ui.versions.VersionPage;
 import org.jackhuang.hmcl.util.*;
@@ -100,7 +99,6 @@ public final class Controllers {
         return accountListPage;
     });
     private static Lazy<LauncherSettingsPage> settingsPage = new Lazy<>(LauncherSettingsPage::new);
-    private static Lazy<UpdatePage> updatePage = new Lazy<>(UpdatePage::new);
 
     private Controllers() {
     }
@@ -131,9 +129,6 @@ public final class Controllers {
     // FXThread
     public static LauncherSettingsPage getSettingsPage() {
         return settingsPage.get();
-    }
-    public static UpdatePage getUpdatePage() {
-        return updatePage.get();
     }
 
     // FXThread
@@ -299,7 +294,7 @@ public final class Controllers {
             agreementPane.setBody(label);
             JFXHyperlink agreementLink = new JFXHyperlink(i18n("launcher.agreement"));
             agreementLink.setExternalLink(Metadata.EULA_URL);
-            JFXHyperlink agreementServerLink = new JFXHyperlink("SweetRice 玩家协议");
+            JFXHyperlink agreementServerLink = new JFXHyperlink(Metadata.EULA_TEXT_2);
             agreementServerLink.setExternalLink(Metadata.EULA_URL_2);
             JFXButton yesButton = new JFXButton(i18n("launcher.agreement.accept"));
             yesButton.getStyleClass().add("dialog-accept");
@@ -426,7 +421,6 @@ public final class Controllers {
         downloadPage = null;
         accountListPage = null;
         settingsPage = null;
-        updatePage = null;
         decorator = null;
         stage = null;
         scene = null;

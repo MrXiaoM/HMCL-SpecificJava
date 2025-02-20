@@ -65,7 +65,6 @@ import java.util.stream.Collectors;
 
 import static org.jackhuang.hmcl.setting.ConfigHolder.config;
 import static org.jackhuang.hmcl.ui.FXUtils.runInFX;
-import static org.jackhuang.hmcl.ui.update.UpdatePage.resourceUpdateTask;
 import static org.jackhuang.hmcl.util.Lang.resolveException;
 import static org.jackhuang.hmcl.util.Logging.LOG;
 import static org.jackhuang.hmcl.util.Pair.pair;
@@ -144,7 +143,6 @@ public final class LauncherHelper {
                         return null;
                     return Task.allOf(
                             dependencyManager.checkGameCompletionAsync(version.get(), integrityCheck),
-                            resourceUpdateTask(version.get().getId()),
                             Task.composeAsync(() -> {
                                 try {
                                     ModpackConfiguration<?> configuration = ModpackHelper.readModpackConfiguration(repository.getModpackConfiguration(selectedVersion));

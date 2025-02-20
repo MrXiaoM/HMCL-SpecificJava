@@ -35,14 +35,14 @@ public class AboutPage extends StackPane {
         {
             IconedTwoLineListItem server = new IconedTwoLineListItem();
             server.setImage(FXUtils.newBuiltinImage("/assets/img/icon.png"));
-            server.setTitle("SweetRiceMC 客户端启动器");
+            server.setTitle("NeoWorld 客户端启动器");
             server.setSubtitle("基于 HMCL 修改");
             server.setExternalLink("https://www.pds.ink");
 
             IconedTwoLineListItem dev = new IconedTwoLineListItem();
             dev.setImage(FXUtils.newBuiltinImage("/assets/img/mrxiaom.png"));
             dev.setTitle("人间工作 (MrXiaoM)");
-            dev.setSubtitle("SweetRice 服务器总技术");
+            dev.setSubtitle("NeoWorld 服务器总技术");
             dev.setExternalLink("https://space.bilibili.com/330771760");
 
             IconedTwoLineListItem launcher = new IconedTwoLineListItem();
@@ -192,7 +192,7 @@ public class AboutPage extends StackPane {
             openSourceFork.setExternalLink("https://github.com/MrXiaoM/HMCL-SpecificJava");
 
             IconedTwoLineListItem license = new IconedTwoLineListItem();
-            license.setTitle("SweetRice 玩家协议");
+            license.setTitle(Metadata.EULA_TEXT_2);
             license.setSubtitle(i18n("about.claim.statement"));
             license.setExternalLink(Metadata.EULA_URL_2);
 

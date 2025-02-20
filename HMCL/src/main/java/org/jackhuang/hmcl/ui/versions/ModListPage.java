@@ -37,7 +37,6 @@ import org.jackhuang.hmcl.ui.FXUtils;
 import org.jackhuang.hmcl.ui.ListPageBase;
 import org.jackhuang.hmcl.ui.construct.MessageDialogPane;
 import org.jackhuang.hmcl.ui.construct.PageAware;
-import org.jackhuang.hmcl.util.GithubFileFetch;
 import org.jackhuang.hmcl.util.Logging;
 import org.jackhuang.hmcl.util.TaskCancellationAction;
 import org.jackhuang.hmcl.util.io.FileUtils;
@@ -45,7 +44,6 @@ import org.jackhuang.hmcl.util.io.FileUtils;
 import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
-import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.logging.Level;
@@ -178,33 +176,6 @@ public final class ModListPage extends ListPageBase<ModListPageSkin.ModInfoObjec
                 .filter(Objects::nonNull)
                 .map(ModListPageSkin.ModInfoObject::getModInfo)
                 .forEach(info -> info.setActive(false));
-    }
-
-    public void exportPackageJson(ObservableList<ModListPageSkin.ModInfoObject> selectedItems) {
-        JsonObject jsonRoot = new JsonObject();
-        JsonObject files = new JsonObject();
-        for (ModListPageSkin.ModInfoObject modInfo : selectedItems.stream()
-                .filter(Objects::nonNull)
-                .collect(Collectors.toList())) {
-            JsonObject obj = new JsonObject();
-
-            File file = modInfo.getModInfo().getFile().toFile();
-            String name = file.getName();
-            String modId = modInfo.getModInfo().getId();
-            String hash = GithubFileFetch.calcHash(file.getAbsolutePath());
-            obj.addProperty("modId", modId);
-            obj.addProperty("hash", hash);
-            files.add(name, obj);
-        }
-        jsonRoot.add("files", files);
-        try {
-            FileUtils.writeText(new File(profile.getRepository().getRunDirectory(versionId), "package.json"),
-                    GSON.toJson(jsonRoot),
-                    StandardCharsets.UTF_8);
-            Controllers.dialog("已将当前 Mod 列表保存到 package.json", "完成", MessageDialogPane.MessageType.SUCCESS);
-        } catch (IOException e) {
-            Controllers.dialog("Mod 列表保存失败\n" + e.getLocalizedMessage(), "错误", MessageDialogPane.MessageType.ERROR);
-        }
     }
 
     public void openModFolder() {

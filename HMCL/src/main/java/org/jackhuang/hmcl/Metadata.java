@@ -30,8 +30,8 @@ import java.nio.file.Paths;
 public final class Metadata {
     private Metadata() {}
 
-    public static final String NAME = "SRMC";
-    public static final String FULL_NAME = "SweetRiceMC";
+    public static final String NAME = "NeoMC";
+    public static final String FULL_NAME = "NeoWorld";
     public static final String VERSION = System.getProperty("hmcl.version.override", JarUtils.getManifestAttribute("Implementation-Version", "@develop@"));
 
     public static final String TITLE = NAME + " " + VERSION;
@@ -42,7 +42,8 @@ public final class Metadata {
     public static final String CHANGELOG_URL = "https://docs.hmcl.net/changelog/";
     public static final String PUBLISH_URL = "https://hmcl.huangyuhui.net";
     public static final String EULA_URL = "https://docs.hmcl.net/eula/hmcl.html";
-    public static final String EULA_URL_2 = "https://docs.pds.ink/rules";
+    public static final String EULA_TEXT_2 = "NeoWorld 玩家协议";
+    public static final String EULA_URL_2 = "https://www.mcio.dev/docs/rules";
 
     public static final String BUILD_CHANNEL = JarUtils.getManifestAttribute("Build-Channel", "nightly");
     public static final String GITHUB_SHA = JarUtils.getManifestAttribute("GitHub-SHA", null);
@@ -56,12 +57,12 @@ public final class Metadata {
             if (OperatingSystem.CURRENT_OS.isLinuxOrBSD()) {
                 String xdgData = System.getenv("XDG_DATA_HOME");
                 if (StringUtils.isNotBlank(xdgData)) {
-                    HMCL_DIRECTORY = Paths.get(xdgData, "hmcl-sweetrice").toAbsolutePath();
+                    HMCL_DIRECTORY = Paths.get(xdgData, "hmcl-neoworld").toAbsolutePath();
                 } else {
-                    HMCL_DIRECTORY = Paths.get(System.getProperty("user.home", "."), ".local", "share", "hmcl-sweetrice").toAbsolutePath();
+                    HMCL_DIRECTORY = Paths.get(System.getProperty("user.home", "."), ".local", "share", "hmcl-neoworld").toAbsolutePath();
                 }
             } else {
-                HMCL_DIRECTORY = OperatingSystem.getWorkingDirectory("hmcl-sweetrice");
+                HMCL_DIRECTORY = OperatingSystem.getWorkingDirectory("hmcl-neoworld");
             }
         } else {
             HMCL_DIRECTORY = Paths.get(hmclHome).toAbsolutePath().normalize();

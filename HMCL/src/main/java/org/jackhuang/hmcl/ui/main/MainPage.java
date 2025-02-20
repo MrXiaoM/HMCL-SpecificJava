@@ -114,14 +114,14 @@ public final class MainPage extends StackPane implements DecoratorPage {
 
         announcementPane = new VBox();
         announcementPane.getChildren().add(new AnnouncementCard(
-                "欢迎来到 SweetRice 服务器！在左侧添加账户，启动游戏吧~\n\n" +
+                "欢迎来到 NeoWorld 服务器！在左侧添加账户，启动游戏吧~\n\n" +
                 "在这里，你可以打开游戏文件夹进行安装 Mod/材质包/光影 或者查看截图等等\n" +
                 folder("screenshots", "打开截图文件夹") + " | " +
                 folder("mods", "打开Mods文件夹") + " | " +
                 folder("resourcepacks", "打开材质包文件夹") + " | " +
                 folder("shaderpacks", "打开光影文件夹") +"\n\n" +
-                "加入玩家交流群：" + url("https://www.pds.ink/group", "937785954") + "\n" +
-                "请记住我们的服务器地址 " + url("https://www.pds.ink", "pds.ink")));
+                "加入玩家交流群：" + url("https://www.mcio.dev/group", "832355044") + "\n" +
+                "请记住我们的服务器地址 " + url("https://www.mcio.dev", "mcio.dev")));
         getChildren().add(announcementPane);
 
         updatePane = new StackPane();
@@ -247,7 +247,7 @@ public final class MainPage extends StackPane implements DecoratorPage {
     }
 
     private static String folder(String folder, String text) {
-        return "<a href=\"hmcl://folder/.minecraft/versions/SweetRice/" + folder + "\">" + text + "</a>";
+        return "<a href=\"hmcl://folder/.minecraft/versions/NeoWorld/" + folder + "\">" + text + "</a>";
     }
     private static String url(String url, String text) {
         return "<a href=\"" + url + "\">" + text + "</a>";
