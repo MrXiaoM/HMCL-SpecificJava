@@ -99,7 +99,7 @@ BEGIN
         BLOCK "080404b0"
         BEGIN
             VALUE "CompanyName", "huanghongxun"
-            VALUE "FileDescription", "Hello Minecraft! Launcher For Windows, SweetRiceMC modified"
+            VALUE "FileDescription", "Hello Minecraft! Launcher For Windows, NeoWorld modified"
             VALUE "FileVersion", "3.5.0.0"
             VALUE "InternalName", "HMCL.exe"
             VALUE "LegalCopyright", "Copyright (C) 2024 huangyuhui"
